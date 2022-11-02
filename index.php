@@ -9,16 +9,16 @@ define('BASE_URL', '/comem-archidep-php-todo-exercise/');
 
 // Database connection parameters.
 define('DB_USER', 'todolist');
-define('DB_PASS', 'chAngeMeN0w!');
+define('DB_PASS', 'Todolist$1');
 define('DB_NAME', 'todolist');
 define('DB_HOST', '127.0.0.1');
 define('DB_PORT', '3306');
 
-$db = new PDO('mysql:host='.DB_HOST.';port='.DB_PORT.';dbname='.DB_NAME, DB_USER, DB_PASS);
+$db = new PDO('mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME, DB_USER, DB_PASS);
 $items = array();
 
 if (isset($_POST['action'])) {
-    switch($_POST['action']) {
+    switch ($_POST['action']) {
 
             /**
          * Insert a new task into the database, then redirect to the base URL.
@@ -27,13 +27,13 @@ if (isset($_POST['action'])) {
 
             $title = $_POST['title'];
             if ($title && $title !== '') {
-                $insertQuery = 'INSERT INTO todo VALUES(NULL, \''.$title.'\', FALSE, CURRENT_TIMESTAMP)';
+                $insertQuery = 'INSERT INTO todo VALUES(NULL, \'' . $title . '\', FALSE, CURRENT_TIMESTAMP)';
                 if (!$db->query($insertQuery)) {
                     die(print_r($db->errorInfo(), true));
                 }
             }
 
-            header('Location: '.BASE_URL);
+            header('Location: ' . BASE_URL);
             die();
 
             /**
@@ -43,14 +43,14 @@ if (isset($_POST['action'])) {
         case 'toggle':
 
             $id = $_POST['id'];
-            if(is_numeric($id)) {
+            if (is_numeric($id)) {
                 $updateQuery = "UPDATE todo SET done = NOT done WHERE id = '$id'"; // IMPLEMENT ME
-                if(!$db->query($updateQuery)) {
+                if (!$db->query($updateQuery)) {
                     die(print_r($db->errorInfo(), true));
                 }
             }
 
-            header('Location: '.BASE_URL);
+            header('Location: ' . BASE_URL);
             die();
 
             /**
@@ -59,14 +59,14 @@ if (isset($_POST['action'])) {
         case 'delete':
 
             $id = $_POST['id'];
-            if(is_numeric($id)) {
+            if (is_numeric($id)) {
                 $deleteQuery = "DELETE FROM todo WHERE id ='$id'"; // IMPLEMENT ME
-                if(!$db->query($deleteQuery)) {
+                if (!$db->query($deleteQuery)) {
                     die(print_r($db->errorInfo(), true));
                 }
             }
 
-            header('Location: '.BASE_URL);
+            header('Location: ' . BASE_URL);
             die();
 
         default:
@@ -82,22 +82,26 @@ $items = $db->query($selectQuery);
 ?>
 
 <html>
+
 <head>
     <title>TodoList</title>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <!-- Custom CSS -->
     <style>
-        button {
-            cursor: pointer;
-        }
-        form {
-            margin: 0;
-        }
+    button {
+        cursor: pointer;
+    }
+
+    form {
+        margin: 0;
+    }
     </style>
 </head>
+
 <body>
 
     <!-- Navbar -->
@@ -129,35 +133,36 @@ $items = $db->query($selectQuery);
         <div class='list-group mt-3'>
 
             <!-- Todo items -->
-            <?php foreach($items as $item): ?>
-                <div class='list-group-item d-flex justify-content-between align-items-center<?php if($item['done']): ?> list-group-item-success<?php else: ?> list-group-item-warning<?php endif;?>'>
+            <?php foreach ($items as $item) : ?>
+            <div
+                class='list-group-item d-flex justify-content-between align-items-center<?php if ($item['done']) : ?> list-group-item-success<?php else : ?> list-group-item-warning<?php endif; ?>'>
 
-                    <div class='title'><?= $item['title'] ?></div>
+                <div class='title'><?= $item['title'] ?></div>
 
-                    <!-- Todo item controls -->
-                    <form action='<?= BASE_URL ?>' method='post'>
-                        <input type='hidden' name='id' value='<?= $item['id'] ?>' />
+                <!-- Todo item controls -->
+                <form action='<?= BASE_URL ?>' method='post'>
+                    <input type='hidden' name='id' value='<?= $item['id'] ?>' />
 
-                        <div class='btn-group btn-group-sm'>
+                    <div class='btn-group btn-group-sm'>
 
-                            <!-- Todo item toggle button -->
-                            <button type='submit' name='action' value='toggle' class='btn btn-primary'>
-                                <?php if ($item['done']) { ?>
-                                    Undo
-                                <?php } else { ?>
-                                    Done
-                                <?php } ?>
-                            </button>
+                        <!-- Todo item toggle button -->
+                        <button type='submit' name='action' value='toggle' class='btn btn-primary'>
+                            <?php if ($item['done']) { ?>
+                            Undo
+                            <?php } else { ?>
+                            Done
+                            <?php } ?>
+                        </button>
 
-                            <!-- Todo item delete button -->
-                            <button type='submit' name='action' value='delete' class='btn btn-danger'>
-                                X
-                            </button>
+                        <!-- Todo item delete button -->
+                        <button type='submit' name='action' value='delete' class='btn btn-danger'>
+                            X
+                        </button>
 
-                        </div>
-                    </form>
+                    </div>
+                </form>
 
-                </div>
+            </div>
             <?php endforeach; ?>
 
         </div>
@@ -165,9 +170,16 @@ $items = $db->query($selectQuery);
     </main>
 
     <!-- Bootstrap JavaScript & dependencies -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    </script>
 
 </body>
+
 </html>
